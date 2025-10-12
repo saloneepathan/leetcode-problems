@@ -1,3 +1,11 @@
+package main
+
+import (
+	"fmt"
+	"math/bits"
+)
+
+// Fast modular exponentiation
 func quickmul(x, y, mod int64) int64 {
 	res, cur := int64(1), x%mod
 	for y > 0 {
@@ -12,11 +20,15 @@ func quickmul(x, y, mod int64) int64 {
 
 func magicalSum(m int, k int, nums []int) int {
 	mod := int64(1000000007)
+
+	// Factorials
 	fac := make([]int64, m+1)
 	fac[0] = 1
 	for i := 1; i <= m; i++ {
 		fac[i] = fac[i-1] * int64(i) % mod
 	}
+
+	// Inverse factorials
 	ifac := make([]int64, m+1)
 	ifac[0] = 1
 	ifac[1] = 1
@@ -27,6 +39,7 @@ func magicalSum(m int, k int, nums []int) int {
 		ifac[i] = ifac[i-1] * ifac[i] % mod
 	}
 
+	// Precompute powers of nums
 	numsPower := make([][]int64, len(nums))
 	for i := range nums {
 		numsPower[i] = make([]int64, m+1)
@@ -36,6 +49,7 @@ func magicalSum(m int, k int, nums []int) int {
 		}
 	}
 
+	// DP array
 	f := make([][][][]int64, len(nums))
 	for i := range nums {
 		f[i] = make([][][]int64, m+1)
@@ -47,9 +61,12 @@ func magicalSum(m int, k int, nums []int) int {
 		}
 	}
 
+	// Base case
 	for j := 0; j <= m; j++ {
 		f[0][j][j][0] = numsPower[0][j] * ifac[j] % mod
 	}
+
+	// DP transitions
 	for i := 0; i+1 < len(nums); i++ {
 		for j := 0; j <= m; j++ {
 			for p := 0; p <= m*2; p++ {
@@ -68,6 +85,7 @@ func magicalSum(m int, k int, nums []int) int {
 		}
 	}
 
+	// Compute result
 	res := int64(0)
 	for p := 0; p <= m*2; p++ {
 		for q := 0; q <= k; q++ {
@@ -76,5 +94,23 @@ func magicalSum(m int, k int, nums []int) int {
 			}
 		}
 	}
+
 	return int(res)
+}
+
+func main() {
+	// Example test case
+	m := 3
+	k := 2
+	nums := []int{1, 2, 3}
+
+	result := magicalSum(m, k, nums)
+	fmt.Println("Result:", result)
+
+	// Another test case
+	m = 8
+	k = 8
+	nums = []int{4475, 37658, 51018, 12424, 65157, 27914, 31161, 25310, 97672, 53516, 26018, 1860, 47220, 27702, 77234, 6951, 22039, 9184, 644}
+	result = magicalSum(m, k, nums)
+	fmt.Println("Result:", result)
 }
