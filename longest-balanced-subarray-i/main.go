@@ -1,3 +1,9 @@
+package main
+
+import (
+	"fmt"
+)
+
 func longestBalanced(nums []int) int {
 	n := len(nums)
 	ans := 0
@@ -31,4 +37,11 @@ func longestBalanced(nums []int) int {
 	}
 
 	return ans
+}
+
+func main() {
+	fmt.Println(longestBalanced([]int{2, 5, 4, 3}))    // Expected: 4
+	fmt.Println(longestBalanced([]int{3, 2, 2, 5, 4})) // Expected: 5
+	fmt.Println(longestBalanced([]int{1, 2, 3, 2}))    // Expected: 3
+	fmt.Println(longestBalanced([]int{22, 36, 22}))    // Expected: 0
 }
