@@ -1,29 +1,26 @@
-class Solution:
-    def splitArray(self, nums: list[int], k: int) -> int:
+def splitArray(nums, k):
+    left = max(nums)
+    right = sum(nums)
 
-        left = max(nums)
-        right = sum(nums)
+    while left < right:
+        mid = (left + right) // 2
 
-        while left < right:
 
-            mid = (left + right) // 2
+        groups = 1
+        currSum = 0
 
-            groups = 1
-            current_sum = 0
-
-            for num in nums:
-
-                if current_sum + num > mid:
-                    groups += 1
-                    current_sum = num
-                else:
-                    current_sum += num
-
-            if groups > k:
-                left = mid + 1
+        for num in nums:
+            if currSum + num > mid:
+                groups += 1
+                currSum = num 
             else:
-                right = mid
+                currSum += num
 
-        return left
+        if groups > k:
+            left = left + 1
+        else: 
+            right = mid 
 
-print(Solution().splitArray([7, 2, 5, 10, 8], 2))
+    return left
+
+print(splitArray([7, 3, 4, 8, 10, 9, 4], 2))
